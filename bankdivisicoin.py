@@ -79,6 +79,7 @@ class Bank:
 
         for tx_out in tx.tx_outs:
             out_sum += tx_out.amount
+            
 
         assert in_sum == out_sum
 
@@ -89,11 +90,11 @@ class Bank:
 
     def fetch_utxo(self, public_key):
         # Find which (tx_id, index) pairs have been spent
-        spent_pairs = [(tx_in.tx_id, tx_in.index) 
-                        for tx in self.txs.values() 
+        spent_pairs = [(tx_in.tx_id, tx_in.index)
+                        for tx in self.txs.values()
                         for tx_in in tx.tx_ins]
         # Return tx_outs associated with public_key and not in ^^ list
-        return [tx_out for tx in self.txs.values() 
+        return [tx_out for tx in self.txs.values()
                    for i, tx_out in enumerate(tx.tx_outs)
                        if public_key.to_string() == tx_out.public_key.to_string()
                        and (tx.id, i) not in spent_pairs]
